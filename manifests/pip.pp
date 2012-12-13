@@ -26,8 +26,9 @@
 #
 define python::pip (
   $virtualenv,
-  $ensure = present,
-  $proxy  = false
+  $ensure  = present,
+  $proxy   = false,
+  $timeout = 300
 ) {
 
   # Parameter validation
@@ -50,6 +51,7 @@ define python::pip (
       exec { "pip_install_${name}":
         command => "${virtualenv}/bin/pip install ${proxy_flag} ${name}",
         unless  => "${virtualenv}/bin/pip freeze | grep -i -e ${grep_regex}",
+        timeout => $timeout,
       }
     }
 
